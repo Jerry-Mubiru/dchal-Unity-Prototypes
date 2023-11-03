@@ -1,3 +1,6 @@
+using UnityEngine;
+using System.Collections;
+
 public abstract class Question
 {
     //This abstract class represents a Generic Question that is presented to the player
