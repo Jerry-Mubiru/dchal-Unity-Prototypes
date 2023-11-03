@@ -17,7 +17,9 @@ public abstract class Challenge : MonoBehaviour
     //abstract methods that are implemented by all challenges
     public abstract void StartChallenge(); //called when a challenge is started
 
-    public abstract void FinishChallenge(); //called when a challenge is completed
+    public abstract void FinishChallenge(); //called when a challenge is completed - Player is correct
 
-    public abstract void FailChallenge();  //called when the player gets a wrong answer on a challenge
+    public abstract void FailChallenge();  //called when the player gets a wrong answer on a challenge - Player is wrong
+
+    public abstract void ForfeitChallenge(); //called when a player leaves a challenge without completing
 }

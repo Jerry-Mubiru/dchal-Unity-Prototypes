@@ -13,7 +13,7 @@ public class DoorChallenge : Challenge
         Completed
     }
     //stores the current state of the Door Challenge
-    private DoorState CurrentState = WaitingForPlayer;
+    private DoorState CurrentState = DoorState.WaitingForPlayer; //Default State 
 
     //---METHODS---
     //constructor
@@ -27,16 +27,24 @@ public class DoorChallenge : Challenge
 
     private void OnTriggerEnter(Collider other)
     {
-        HandleTriggerEvent(DoorState.PlayerAttempting);
+        //the trigger should do nothing if the state is not currently waiting for the player - initiate attempting state
+        if (CurrentState == DoorState.WaitingForPlayer){ 
+            HandleTriggerEvent(DoorState.PlayerAttempting);
+        }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        HandleTriggerEvent(DoorState.WaitingForPlayer);
+        //the trigger should only do something if the player was in a state of attemtping - return to waiting
+        if (CurrentState == DoorState.PlayerAttempting){ 
+            HandleTriggerEvent(DoorState.WaitingForPlayer);
+        }
     }
 
     private void OnTriggerStay(Collider other)
     {
+        //This is where a player can obtain completed status - or have a fail trigger - FailChallenge(): 
+        //we can handle this with two dedicated functions - CorrectAnswer() and WrongAnswer():
         // Handle transitions or behaviors while the player stays within the collider.
         // Determine correctness of answers and transition accordingly.
         // Update UI or other interactions based on player actions.
@@ -47,11 +55,11 @@ public class DoorChallenge : Challenge
         // Handle state transitions and state-specific logic here
         switch (nextState)
         {
-            case DoorState.WaitingForPlayer:
+            case DoorState.PlayerAttempting: 
                 StartChallenge(); // StartChallenge behavior
                 break;
-            case DoorState.PlayerAttempting:
-                // Handle UI or door interactions for this state
+            case DoorState.WaitingForPlayer:
+                ForfeitChallenge(); //ForfeitChallenge behavior
                 break;
             case DoorState.Completed:
                 FinishChallenge(); // FinishChallenge behavior
@@ -76,10 +84,16 @@ public class DoorChallenge : Challenge
         // Handle UI or door interactions specific to finishing the challenge
     }
 
+    //called when a challenge is forfeited
+    public override void ForfeitChallenge()
+    {
+        currentState = DoorState.WaitingForPlayer;
+    }
+
     //called when the player gets a wrong answer
     public override void FailChallenge()
     {
-        currentState = DoorState.WaitingForPlayer;
+        //Trigger actions for a wrong answer like Trial account
         // Handle UI or door interactions specific to failing the challenge
     }
 }
