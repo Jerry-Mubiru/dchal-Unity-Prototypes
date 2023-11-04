@@ -3,97 +3,60 @@ using System.Collections;
 
 public class DoorChallenge : Challenge
 {
-    //this class represents the Door challenges that the player encounters
-
-    //---VARIABLES---
-    //stores the different states that the Door challenge could exist in
-    private enum DoorState{
-        WaitingForPlayer,
-        PlayerAttempting,
-        Completed
-    }
-    //stores the current state of the Door Challenge
-    private DoorState CurrentState = DoorState.WaitingForPlayer; //Default State 
+    //---VARIABLES--- 
 
     //---METHODS---
     //constructor
     public DoorChallenge(Question question) : base(question){ }
 
-    //when starting a door challenge
-    private void Start()
-    {
+    private void Start(){
         // Initialize the challenge, e.g., set the question, UI, etc.
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        //the trigger should do nothing if the state is not currently waiting for the player - initiate attempting state
-        if (CurrentState == DoorState.WaitingForPlayer){ 
-            HandleTriggerEvent(DoorState.PlayerAttempting);
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        //the trigger should only do something if the player was in a state of attemtping - return to waiting
-        if (CurrentState == DoorState.PlayerAttempting){ 
-            HandleTriggerEvent(DoorState.WaitingForPlayer);
-        }
-    }
-
-    private void OnTriggerStay(Collider other)
-    {
-        //This is where a player can obtain completed status - or have a fail trigger - FailChallenge(): 
-        //we can handle this with two dedicated functions - CorrectAnswer() and WrongAnswer():
-        // Handle transitions or behaviors while the player stays within the collider.
-        // Determine correctness of answers and transition accordingly.
-        // Update UI or other interactions based on player actions.
-    }
-
-    private void HandleTriggerEvent(DoorState nextState)
-    {
-        // Handle state transitions and state-specific logic here
-        switch (nextState)
-        {
-            case DoorState.PlayerAttempting: 
-                StartChallenge(); // StartChallenge behavior
-                break;
-            case DoorState.WaitingForPlayer:
-                ForfeitChallenge(); //ForfeitChallenge behavior
-                break;
-            case DoorState.Completed:
-                FinishChallenge(); // FinishChallenge behavior
-                break;
-        }
-
-        // Update the current state to the next state to reflect the transition
-        currentState = nextState;
-    }
-
     //called when starting a challenge
-    public override void StartChallenge()
-    {
-        currentState = DoorState.PlayerAttempting;
+    public override void StartChallenge(){
+        //Testing Debug Log
+        Debug.Log("Challenge Started..");
+
+        currentState = ChallengeState.PlayerAttempting;
         // Handle UI or door interactions specific to starting the challenge
     }
 
-    //called when a challenge is completed
-    public override void FinishChallenge()
-    {
-        currentState = DoorState.Completed;
+    //called when the player gets a correct answer - challenge completed
+    public override void FinishChallenge(){
+        //Testing Debug Log
+        Debug.Log("Challenge Completed..");
+
+        currentState = ChallengeState.Completed;
         // Handle UI or door interactions specific to finishing the challenge
     }
 
     //called when a challenge is forfeited
-    public override void ForfeitChallenge()
-    {
-        currentState = DoorState.WaitingForPlayer;
+    public override void ForfeitChallenge(){
+        //Testing Debug Log
+        Debug.Log("Challenge Forfeited..");
+
+        currentState = ChallengeState.WaitingForPlayer;
+        //handle UI or door interactions specific to leaving a challenge without completion
     }
 
     //called when the player gets a wrong answer
-    public override void FailChallenge()
-    {
+    public override void FailChallenge(){
+        //Testing Debug Log
+        Debug.Log("Challenge Failed..");
         //Trigger actions for a wrong answer like Trial account
         // Handle UI or door interactions specific to failing the challenge
+    }
+
+    //called to indicate whether the player has made an attempt
+    public override bool AttemptChallenge(){
+        //logic to check button presses related to answering the question
+        return false;
+    }
+
+    //used to check whether the solution is correct
+    public override bool IsCorrectSolution(){
+        //logic to check the correctness of a solution
+        return false;
     }
 }
