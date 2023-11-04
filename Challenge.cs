@@ -95,6 +95,6 @@ public abstract class Challenge : MonoBehaviour
                 break;
         }
         // Update the current state to the next state to reflect the transition
-        currentState = nextState;
+        CurrentState = nextState;
     }
 }

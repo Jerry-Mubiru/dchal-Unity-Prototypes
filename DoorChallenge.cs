@@ -3,8 +3,6 @@ using System.Collections;
 
 public class DoorChallenge : Challenge
 {
-    //---VARIABLES--- 
-
     //---METHODS---
     //constructor
     public DoorChallenge(Question question) : base(question){ }
